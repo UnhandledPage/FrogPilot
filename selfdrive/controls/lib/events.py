@@ -1221,6 +1221,10 @@ EVENTS: dict[int, dict[str, Alert | AlertCallbackType]] = {
       Priority.HIGHEST, VisualAlert.none, AudibleAlert.fart, 10.),
   },
 
+  EventName.slowerVehicleAhead: {
+    ET.PERMANENT: NormalPermanentAlert("", "", duration=0.2, priority=Priority.LOW, audible_alert=AudibleAlert.prompt, creation_delay=0.),
+  },
+
   EventName.toBeContinued: {
     ET.PERMANENT: Alert(
       "To be continued...",

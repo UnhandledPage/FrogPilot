@@ -38,6 +38,8 @@ class FrogPilotEvents:
 
     self.max_acceleration = 0
     self.random_event_timer = 0
+    self.slower_vehicle_alert_timer = 0
+    self.slower_vehicle_alert_played_recently = False
     self.tracking_lead_distance = 0
 
   def update(self, carState, controlsState, frogpilotCarState, lead_distance, modelData, v_cruise, frogpilot_toggles):
@@ -237,3 +239,20 @@ class FrogPilotEvents:
       self.events.add(EventName.turningLeft)
     elif modelData.meta.turnDirection == Desire.turnRight:
       self.events.add(EventName.turningRight)
+
+    # Slower vehicle ahead alert
+    if frogpilot_toggles.slower_vehicle_alert and controlsState.enabled and self.frogpilot_planner.frogpilot_following.slower_lead:
+      if not self.slower_vehicle_alert_played_recently:
+        self.events.add(EventName.slowerVehicleAhead)
+        self.slower_vehicle_alert_played_recently = True
+        self.slower_vehicle_alert_timer = 0
+    else:
+      # Reset if conditions are no longer met
+      self.slower_vehicle_alert_played_recently = False
+      self.slower_vehicle_alert_timer = 0
+
+    if self.slower_vehicle_alert_played_recently:
+      self.slower_vehicle_alert_timer += DT_MDL
+      if self.slower_vehicle_alert_timer > 5:  # 5 second cooldown
+        self.slower_vehicle_alert_played_recently = False
+        self.slower_vehicle_alert_timer = 0

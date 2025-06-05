@@ -293,6 +293,7 @@ frogpilot_default_params: list[tuple[str, str | bytes, int]] = [
   ("ShowStoppingPointMetrics", "0", 2),
   ("ShowStorageLeft", "0", 3),
   ("ShowStorageUsed", "0", 3),
+  ("SlowerVehicleAlert", "0", 0),
   ("Sidebar", "0", 0),
   ("SidebarMetrics", "1", 3),
   ("SignalMetrics", "0", 2),
